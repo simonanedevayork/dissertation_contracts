@@ -1,0 +1,71 @@
+get:
+  summary: Get a dog by id
+  operationId: getDogById
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: List of dogs
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../schemas/dog.yml"
+
+post:
+  summary: Create a new dog
+  operationId: createDog
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/dog.yml"
+  responses:
+    '201':
+      description: Dog created
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/dog.yml"
+
+put:
+  summary: Update a dog
+  operationId: updateDog
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/dog.yml"
+  responses:
+    '200':
+      description: Dog updated
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/dog.yml"
+
+delete:
+  summary: Delete a dog
+  operationId: deleteDog
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '204':
+      description: Dog deleted

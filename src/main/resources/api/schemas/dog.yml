@@ -1,0 +1,29 @@
+Dog:
+  type: object
+  properties:
+    id:
+      type: string
+      nullable: false
+    ownerId:
+      type: string
+    name:
+      type: string
+    age:
+      type: integer
+    gender:
+      type: string
+    breed:
+      type: string
+    birthDate:
+      type: string
+      format: date
+    height:
+      type: number
+      format: float
+    width:
+      type: number
+      format: float
+    nurtured:
+      type: boolean
+    quizCompleted:
+      type: boolean

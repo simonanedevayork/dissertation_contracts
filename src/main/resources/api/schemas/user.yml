@@ -1,0 +1,12 @@
+User:
+  type: object
+  properties:
+    participantId:
+      type: string
+    email:
+      type: string
+      format: email
+      nullable: false
+    password:
+      type: string
+      nullable: false

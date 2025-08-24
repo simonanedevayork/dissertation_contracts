@@ -1,0 +1,18 @@
+Weight:
+  type: object
+  properties:
+    id:
+      type: string
+    dogId:
+      type: string
+    currentWeight:
+      type: number
+      format: float
+    goalWeight:
+      type: number
+      format: float
+    createdTs:
+      type: string
+      format: date-time
+    isOverweight:
+      type: boolean

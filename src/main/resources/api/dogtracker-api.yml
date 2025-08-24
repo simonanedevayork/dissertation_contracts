@@ -1,0 +1,17 @@
+openapi: 3.0.3
+info:
+  title: Dog Health Tracker API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+paths:
+  /users:
+    $ref: "./endpoints/users.yml"
+  /dogs:
+    $ref: "./endpoints/dogs.yml"
+  /weights:
+    $ref: "./endpoints/weights.yml"
+components:
+  schemas:
+    User:
+      $ref: "./schemas/user.yml"

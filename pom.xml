@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.york</groupId>
+  <artifactId>doghealthtracker-contracts</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Dog Health Tracker Contracts</name>
+  <description>Contracts, API clients, and OpenAPI YAMLs for Dog Health Tracker</description>
+
+  <properties>
+    <java.version>20</java.version>
+    <generated-sources.contracts.dir>${project.build.directory}/generated-sources/contracts</generated-sources.contracts.dir>
+    <flattened.openapi.file>${generated-sources.contracts.dir}/dogtracker-api.yml</flattened.openapi.file>
+  </properties>
+
+  <build>
+    <plugins>
+
+      <!-- OpenAPI Generator -->
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>7.3.0</version>
+        <executions>
+
+          <!-- Step 1: Flatten YAML -->
+          <execution>
+            <id>generate-flattened-yaml</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/api/dogtracker-api.yml</inputSpec>
+              <generatorName>openapi-yaml</generatorName>
+              <output>${generated-sources.contracts.dir}</output>
+              <configOptions>
+                <outputFile>${flattened.openapi.file}</outputFile>
+              </configOptions>
+            </configuration>
+          </execution>
+
+          <!-- Step 2: Generate Java clients using flattened YAML -->
+          <execution>
+            <id>generate-java-clients</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <phase>process-resources</phase> <!-- Ensure it runs after flattening -->
+            <configuration>
+              <inputSpec>${flattened.openapi.file}</inputSpec>
+              <generatorName>java</generatorName>
+              <apiPackage>org.york.doghealthtracker.api</apiPackage>
+              <modelPackage>org.york.doghealthtracker.model</modelPackage>
+              <invokerPackage>org.york.doghealthtracker.invoker</invokerPackage>
+              <output>${generated-sources.contracts.dir}</output>
+              <configOptions>
+                <dateLibrary>java8</dateLibrary>
+                <hideGenerationTimestamp>true</hideGenerationTimestamp>
+              </configOptions>
+            </configuration>
+          </execution>
+
+        </executions>
+      </plugin>
+
+      <!-- Include generated sources in compilation -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <id>add-generated-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${generated-sources.contracts.dir}/src/main/java</source>
+              </sources>
+            </configuration>
+          </execution>
+
+          <!-- Attach flattened YAML as artifact -->
+          <execution>
+            <id>attach-yaml-artifact</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>${flattened.openapi.file}</file>
+                  <type>yaml</type>
+                  <classifier>openapispec</classifier>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Compiler plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+
+      <!-- Copy YAML resources into target/classes -->
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.3.1</version>
+        <executions>
+          <execution>
+            <id>copy-api-resources</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>resources</goal>
+            </goals>
+            <configuration>
+              <resources>
+                <resource>
+                  <directory>src/main/resources/api</directory>
+                  <includes>
+                    <include>**/*.yml</include>
+                  </includes>
+                </resource>
+              </resources>
+              <outputDirectory>${project.build.outputDirectory}/openapi</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>4.11.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.10.1</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <version>1.3.2</version>
+    </dependency>
+  </dependencies>
+
+</project>

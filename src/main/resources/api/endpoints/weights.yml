@@ -1,0 +1,65 @@
+get:
+  summary: Get all weight records
+  operationId: getWeights
+  responses:
+    '200':
+      description: List of weight records
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../schemas/weight.yml"
+
+post:
+  summary: Create a new weight record
+  operationId: createWeight
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/weight.yml"
+  responses:
+    '201':
+      description: Weight record created
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/weight.yml"
+
+put:
+  summary: Update a weight record
+  operationId: updateWeight
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../schemas/weight.yml"
+  responses:
+    '200':
+      description: Weight record updated
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/weight.yml"
+
+delete:
+  summary: Delete a weight record
+  operationId: deleteWeight
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '204':
+      description: Weight record deleted
